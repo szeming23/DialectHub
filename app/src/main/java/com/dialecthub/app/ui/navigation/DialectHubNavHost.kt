@@ -15,6 +15,7 @@ import com.dialecthub.app.ui.screens.HomeScreen
 import com.dialecthub.app.ui.screens.QuizScreen
 import com.dialecthub.app.ui.screens.SettingsScreen
 import com.dialecthub.app.ui.screens.TranslateScreen
+import com.dialecthub.app.viewmodel.CategoryViewModel
 import com.dialecthub.app.viewmodel.HomeViewModel
 import com.dialecthub.app.viewmodel.QuizViewModel
 import com.dialecthub.app.viewmodel.SettingsViewModel
@@ -53,8 +54,12 @@ fun DialectHubNavHost(navController: NavHostController = rememberNavController()
             arguments = listOf(navArgument(Screen.Category.ARG_CATEGORY_ID) { type = NavType.StringType })
         ) { backStackEntry ->
             val categoryId = backStackEntry.arguments?.getString(Screen.Category.ARG_CATEGORY_ID).orEmpty()
+            val viewModel: CategoryViewModel = viewModel(
+                key = "category_$categoryId",
+                factory = CategoryViewModel.Factory(categoryId, app)
+            )
             CategoryScreen(
-                categoryId = categoryId,
+                viewModel = viewModel,
                 onStartQuiz = { navController.navigate(Screen.Quiz.createRoute(categoryId)) },
                 onBack = { navController.popBackStack() }
             )

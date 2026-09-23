@@ -12,6 +12,10 @@ Ask Claude lookup works offline.
 - **Flashcards** -- swipe through each category, tap a card to flip between
   Hanji + Tâi-lô romanization and the English meaning + a pinyin-style
   pronunciation hint.
+- **Your own pronunciation recordings** -- under each flashcard, record
+  someone saying the word (a native-speaking relative, a teacher, a video
+  you're copying) and replay it whenever you review that card. One clip
+  per word; Re-record replaces it and Delete removes it.
 - **Quizzes** -- multiple-choice practice per category, with a results
   screen and a "best score" saved per category.
 - **Spaced-repetition review** -- every quiz answer schedules that word
@@ -25,6 +29,17 @@ Ask Claude lookup works offline.
 - **Ask Claude** (optional, needs your own Claude API key) -- type an
   English word or phrase and get its Hokkien equivalent as Hanji, Tâi-lô
   and a pinyin-style spelling. The only feature that uses the network.
+
+## Pronunciation recordings
+
+Recording asks for microphone permission the first time you tap Record;
+nothing else in the app uses the mic. Clips are saved as AAC (`.m4a`) in
+the app's private storage (`files/recordings/<word id>.m4a`), never leave
+the device except through Android's own backup, and survive "Reset all
+progress". A new take only replaces the old clip once you tap Stop and
+save, and takes under half a second are discarded as accidental taps.
+Swiping between cards is locked while recording, and leaving the screen
+or the app saves whatever was recorded so far.
 
 ## Ask Claude
 
@@ -46,7 +61,8 @@ app/src/main/java/com/dialecthub/app/
     ProgressRepository.kt DataStore-backed progress/review/theme/API-key persistence
     SpacedRepetition.kt   Leitner-box scheduling rules
     ClaudeTranslator.kt   Ask Claude prompt, API call and reply parsing
-  viewmodel/             Home, Quiz (category + review), Settings and Translate view models
+    PronunciationRecorder.kt  Record/play/delete per-word audio clips
+  viewmodel/             Home, Category, Quiz (category + review), Settings and Translate view models
   ui/
     navigation/          NavHost + route definitions
     screens/             Home, Category, Quiz, Settings and Translate screens
@@ -106,8 +122,9 @@ screen.
 
 ## Roadmap ideas (deliberately out of scope for v1)
 
-- Real audio pronunciation (recorded native-speaker clips, since
-  Android's built-in TTS doesn't support Hokkien).
+- Bundled native-speaker audio for every word, so learners have a
+  reference before recording their own (Android's built-in TTS doesn't
+  support Hokkien).
 - More categories and a proper lesson sequence with difficulty levels.
 - Sentence-building / listening exercises, not just word-level recall.
 - Cloud sync / accounts if multi-device progress becomes a priority.
