@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -58,6 +60,7 @@ fun SettingsScreen(
             modifier = Modifier
                 .padding(padding)
                 .fillMaxSize()
+                .verticalScroll(rememberScrollState())
                 .padding(16.dp)
         ) {
             Text("Appearance", style = MaterialTheme.typography.titleMedium)
@@ -72,7 +75,24 @@ fun SettingsScreen(
                 text = "This app writes Hokkien pronunciation using Tâi-lô, " +
                     "the romanization system promoted by Taiwan's Ministry of Education. " +
                     "Tone marks above vowels (like â, é, ī) show pitch -- they take " +
-                    "practice to hear, so each card also includes a rough English-spelling hint.",
+                    "practice to hear, so each card also includes a pinyin-style spelling.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+
+            Text(
+                text = "Reading the pinyin-style spelling",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(top = 20.dp)
+            )
+            Text(
+                text = "Read it like Hanyu Pinyin, plus a few Hokkien sounds:\n" +
+                    "• ⁿ -- say the vowel through your nose (saⁿ, three)\n" +
+                    "• ending in h, k, t or p -- cut the syllable short (bah, meat)\n" +
+                    "• e -- as in \"bed\", not the pinyin e (de, tea)\n" +
+                    "• ng or m on its own -- a hummed syllable (nng, egg)\n" +
+                    "Tones aren't shown here -- use the Tâi-lô tone marks for those.",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(top = 8.dp)

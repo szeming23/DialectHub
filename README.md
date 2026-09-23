@@ -9,7 +9,7 @@ Built with Kotlin and Jetpack Compose, 100% offline.
 - **5 starter categories** (50 words/phrases total): Greetings, Numbers,
   Family, Food, Common Phrases.
 - **Flashcards** -- swipe through each category, tap a card to flip between
-  Hanji + Tâi-lô romanization and the English meaning + a plain-English
+  Hanji + Tâi-lô romanization and the English meaning + a pinyin-style
   pronunciation hint.
 - **Quizzes** -- multiple-choice practice per category, with a results
   screen and a "best score" saved per category.
@@ -67,8 +67,11 @@ Or from the command line, once you have an Android SDK installed and
 ## Content notes
 
 Romanization uses **Tâi-lô**, the system promoted by Taiwan's Ministry
-of Education. Each entry also has a rough, non-technical
-"sounds like" hint for learners who aren't yet reading tone marks.
+of Education. Each entry also has a pinyin-style respelling (read it like
+Hanyu Pinyin: 再會 Tsài-huē → "zai-hue"), with ⁿ for nasal vowels. It
+drops tones, and it spells voiced b/g the same as unaspirated p/k, so
+Tâi-lô stays the authoritative spelling. The Settings screen explains
+how to read it.
 
 ## Roadmap ideas (deliberately out of scope for v1)
 

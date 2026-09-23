@@ -136,7 +136,7 @@ private fun FlashCard(vocab: VocabItem) {
                             textAlign = TextAlign.Center
                         )
                         Text(
-                            text = "sounds like: ${vocab.pronunciationHint}",
+                            text = "pinyin-style: ${vocab.pronunciationHint}",
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
                             textAlign = TextAlign.Center,
