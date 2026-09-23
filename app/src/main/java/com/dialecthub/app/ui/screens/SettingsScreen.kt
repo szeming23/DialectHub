@@ -1,6 +1,7 @@
 package com.dialecthub.app.ui.screens
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,6 +19,8 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -28,9 +31,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.dialecthub.app.data.model.ThemeMode
 import com.dialecthub.app.viewmodel.SettingsViewModel
@@ -42,6 +47,7 @@ fun SettingsScreen(
     onBack: () -> Unit
 ) {
     val themeMode by viewModel.themeMode.collectAsState()
+    val claudeApiKey by viewModel.claudeApiKey.collectAsState()
     var showResetDialog by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -67,6 +73,13 @@ fun SettingsScreen(
             ThemeMode.entries.forEach { mode ->
                 ThemeOptionRow(mode = mode, selected = themeMode == mode, onSelect = { viewModel.setThemeMode(mode) })
             }
+
+            HorizontalDivider(modifier = Modifier.padding(vertical = 20.dp))
+
+            ClaudeApiKeySection(
+                savedKey = claudeApiKey,
+                onSave = viewModel::setClaudeApiKey
+            )
 
             HorizontalDivider(modifier = Modifier.padding(vertical = 20.dp))
 
@@ -125,6 +138,52 @@ fun SettingsScreen(
                 TextButton(onClick = { showResetDialog = false }) { Text("Cancel") }
             }
         )
+    }
+}
+
+@Composable
+private fun ClaudeApiKeySection(savedKey: String, onSave: (String) -> Unit) {
+    var draft by rememberSaveable { mutableStateOf("") }
+
+    Text("Claude API key", style = MaterialTheme.typography.titleMedium)
+    Text(
+        text = if (savedKey.isBlank()) {
+            "Used by Ask Claude to look up Hokkien words. Stored only on this device."
+        } else {
+            "Key saved (ending ${savedKey.takeLast(4)}). Stored only on this device."
+        },
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        modifier = Modifier.padding(top = 8.dp)
+    )
+    OutlinedTextField(
+        value = draft,
+        onValueChange = { draft = it.trim() },
+        label = { Text(if (savedKey.isBlank()) "sk-ant-..." else "Replace key") },
+        singleLine = true,
+        visualTransformation = PasswordVisualTransformation(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp)
+    )
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.padding(top = 8.dp)
+    ) {
+        Button(
+            onClick = {
+                onSave(draft)
+                draft = ""
+            },
+            enabled = draft.isNotBlank()
+        ) {
+            Text("Save key")
+        }
+        if (savedKey.isNotBlank()) {
+            OutlinedButton(onClick = { onSave("") }) {
+                Text("Remove key")
+            }
+        }
     }
 }
 

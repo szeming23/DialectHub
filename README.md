@@ -2,7 +2,8 @@
 
 A native Android app for learning Hokkien (Bân-lâm-gú), starting simple:
 flashcards + multiple-choice quizzes across a handful of everyday topics.
-Built with Kotlin and Jetpack Compose, 100% offline.
+Built with Kotlin and Jetpack Compose; everything but the optional
+Ask Claude lookup works offline.
 
 ## Features (v1)
 
@@ -17,6 +18,19 @@ Built with Kotlin and Jetpack Compose, 100% offline.
   on-device (no account, no network required).
 - **Light/dark/system theme**, with a "reset all progress" option in
   Settings.
+- **Ask Claude** (optional, needs your own Claude API key) -- type an
+  English word or phrase and get its Hokkien equivalent as Hanji, Tâi-lô
+  and a pinyin-style spelling. The only feature that uses the network.
+
+## Ask Claude
+
+Paste an API key from console.anthropic.com into Settings; it's stored
+only on the device and excluded from Android backups. Each lookup is one
+`claude-opus-5` request through the official Anthropic Java SDK
+(`data/ClaudeTranslator.kt`), kept small on purpose: a short system prompt,
+three few-shot examples that fix the one-line `Hanji|Tâi-lô|pinyin-style`
+reply format, input capped at 60 characters, and low effort. Change
+`MODEL` in that file to trade quality for cost (e.g. `claude-haiku-4-5`).
 
 ## Project structure
 

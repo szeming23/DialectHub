@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -41,6 +42,7 @@ import com.dialecthub.app.viewmodel.HomeViewModel
 fun HomeScreen(
     viewModel: HomeViewModel,
     onCategoryClick: (String) -> Unit,
+    onTranslateClick: () -> Unit,
     onSettingsClick: () -> Unit
 ) {
     val categories by viewModel.uiState.collectAsState()
@@ -50,6 +52,9 @@ fun HomeScreen(
             TopAppBar(
                 title = { Text("DialectHub") },
                 actions = {
+                    IconButton(onClick = onTranslateClick) {
+                        Icon(Icons.Filled.Translate, contentDescription = "Ask Claude")
+                    }
                     IconButton(onClick = onSettingsClick) {
                         Icon(Icons.Filled.Settings, contentDescription = "Settings")
                     }

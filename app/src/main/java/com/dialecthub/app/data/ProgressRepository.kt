@@ -13,9 +13,13 @@ import kotlinx.coroutines.flow.map
 
 private val Context.dataStore by preferencesDataStore(name = "dialecthub_prefs")
 
+// Kept in its own file so the backup rules in res/xml can exclude it.
+private val Context.secretsDataStore by preferencesDataStore(name = "secrets")
+
 /**
  * Persists lightweight learning progress and app preferences locally via
- * DataStore. There's no backend for this v1 -- everything lives on-device.
+ * DataStore. There's no backend -- everything lives on-device, including
+ * the user's own Claude API key.
  */
 class ProgressRepository(private val context: Context) {
 
@@ -54,6 +58,16 @@ class ProgressRepository(private val context: Context) {
         context.dataStore.edit { prefs -> prefs[THEME_MODE_KEY] = mode.name }
     }
 
+    val claudeApiKey: Flow<String> = context.secretsDataStore.data.map { prefs ->
+        prefs[CLAUDE_API_KEY_KEY].orEmpty()
+    }
+
+    suspend fun setClaudeApiKey(apiKey: String) {
+        context.secretsDataStore.edit { prefs ->
+            if (apiKey.isBlank()) prefs.remove(CLAUDE_API_KEY_KEY) else prefs[CLAUDE_API_KEY_KEY] = apiKey.trim()
+        }
+    }
+
     suspend fun resetAllProgress() {
         context.dataStore.edit { prefs ->
             val keysToRemove = prefs.asMap().keys.filter {
@@ -71,5 +85,6 @@ class ProgressRepository(private val context: Context) {
 
     companion object {
         private val THEME_MODE_KEY = stringPreferencesKey("theme_mode")
+        private val CLAUDE_API_KEY_KEY = stringPreferencesKey("claude_api_key")
     }
 }

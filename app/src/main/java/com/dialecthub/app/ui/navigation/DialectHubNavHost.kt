@@ -14,9 +14,11 @@ import com.dialecthub.app.ui.screens.CategoryScreen
 import com.dialecthub.app.ui.screens.HomeScreen
 import com.dialecthub.app.ui.screens.QuizScreen
 import com.dialecthub.app.ui.screens.SettingsScreen
+import com.dialecthub.app.ui.screens.TranslateScreen
 import com.dialecthub.app.viewmodel.HomeViewModel
 import com.dialecthub.app.viewmodel.QuizViewModel
 import com.dialecthub.app.viewmodel.SettingsViewModel
+import com.dialecthub.app.viewmodel.TranslateViewModel
 
 @Composable
 fun DialectHubNavHost(navController: NavHostController = rememberNavController()) {
@@ -31,7 +33,17 @@ fun DialectHubNavHost(navController: NavHostController = rememberNavController()
                 onCategoryClick = { categoryId ->
                     navController.navigate(Screen.Category.createRoute(categoryId))
                 },
+                onTranslateClick = { navController.navigate(Screen.Translate.route) },
                 onSettingsClick = { navController.navigate(Screen.Settings.route) }
+            )
+        }
+
+        composable(Screen.Translate.route) {
+            val viewModel: TranslateViewModel = viewModel(factory = TranslateViewModel.Factory(repository))
+            TranslateScreen(
+                viewModel = viewModel,
+                onOpenSettings = { navController.navigate(Screen.Settings.route) },
+                onBack = { navController.popBackStack() }
             )
         }
 
