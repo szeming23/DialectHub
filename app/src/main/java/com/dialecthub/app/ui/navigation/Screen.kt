@@ -4,6 +4,7 @@ sealed class Screen(val route: String) {
     data object Home : Screen("home")
     data object Settings : Screen("settings")
     data object Translate : Screen("translate")
+    data object Review : Screen("review")
 
     data object Category : Screen("category/{categoryId}") {
         const val ARG_CATEGORY_ID = "categoryId"

@@ -8,8 +8,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.dialecthub.app.data.LessonContent
 import com.dialecthub.app.data.ProgressRepository
+import com.dialecthub.app.data.SpacedRepetition
 import com.dialecthub.app.data.model.VocabItem
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 data class QuizQuestion(
     val vocab: VocabItem,
@@ -17,15 +20,22 @@ data class QuizQuestion(
     val correctIndex: Int
 )
 
+/**
+ * Runs a multiple-choice quiz over one category, or, when [categoryId] is
+ * null, over the words currently due for spaced-repetition review. Every
+ * answer updates that word's review schedule.
+ */
 class QuizViewModel(
-    private val categoryId: String,
+    private val categoryId: String?,
     private val repository: ProgressRepository
 ) : ViewModel() {
 
-    val categoryTitle: String = LessonContent.findCategory(categoryId).titleEn
+    val title: String =
+        if (categoryId == null) "Review" else "${LessonContent.findCategory(categoryId).titleEn} Quiz"
 
-    private val questions: List<QuizQuestion> = buildQuestions(categoryId)
-    val totalQuestions: Int = questions.size
+    /** Null while the review words are loading; empty if nothing is due. */
+    var questions by mutableStateOf<List<QuizQuestion>?>(null)
+        private set
 
     var currentIndex by mutableStateOf(0)
         private set
@@ -36,23 +46,43 @@ class QuizViewModel(
     var isFinished by mutableStateOf(false)
         private set
 
-    val currentQuestion: QuizQuestion get() = questions[currentIndex]
+    val totalQuestions: Int get() = questions?.size ?: 0
+    val currentQuestion: QuizQuestion get() = questions!![currentIndex]
     val scorePercent: Int get() = if (totalQuestions == 0) 0 else (score * 100) / totalQuestions
+
+    init {
+        if (categoryId != null) {
+            questions = buildQuestions(LessonContent.findCategory(categoryId).items.shuffled())
+        } else {
+            viewModelScope.launch {
+                val itemsById = LessonContent.categories.flatMap { it.items }.associateBy { it.id }
+                // Words removed from the lesson file may still have a saved schedule.
+                val dueIds = SpacedRepetition.dueItemIds(
+                    repository.reviewStates.first().filterKeys { it in itemsById },
+                    today()
+                )
+                questions = buildQuestions(dueIds.map { itemsById.getValue(it) }.shuffled())
+            }
+        }
+    }
 
     fun selectAnswer(index: Int) {
         if (selectedOption != null) return
         selectedOption = index
-        if (index == currentQuestion.correctIndex) score++
+        val correct = index == currentQuestion.correctIndex
+        if (correct) score++
+        val itemId = currentQuestion.vocab.id
+        viewModelScope.launch { repository.recordAnswer(itemId, correct, today()) }
     }
 
     fun nextQuestion() {
-        if (currentIndex < questions.lastIndex) {
+        if (currentIndex < totalQuestions - 1) {
             currentIndex++
             selectedOption = null
         } else {
             isFinished = true
-            viewModelScope.launch {
-                repository.saveQuizResult(categoryId, scorePercent)
+            if (categoryId != null) {
+                viewModelScope.launch { repository.saveQuizResult(categoryId, scorePercent) }
             }
         }
     }
@@ -64,11 +94,13 @@ class QuizViewModel(
         isFinished = false
     }
 
-    private fun buildQuestions(categoryId: String): List<QuizQuestion> {
-        val category = LessonContent.findCategory(categoryId)
-        val allMeanings = category.items.map { it.english }
-        return category.items.shuffled().map { vocab ->
-            val distractors = allMeanings
+    /** Distractors come from the word's own category so the choices stay comparable. */
+    private fun buildQuestions(items: List<VocabItem>): List<QuizQuestion> {
+        val categoryMeanings = LessonContent.categories
+            .flatMap { category -> category.items.map { it.id to category.items.map(VocabItem::english) } }
+            .toMap()
+        return items.map { vocab ->
+            val distractors = categoryMeanings.getValue(vocab.id)
                 .filter { it != vocab.english }
                 .shuffled()
                 .take(3)
@@ -81,8 +113,10 @@ class QuizViewModel(
         }
     }
 
+    private fun today(): Long = LocalDate.now().toEpochDay()
+
     class Factory(
-        private val categoryId: String,
+        private val categoryId: String?,
         private val repository: ProgressRepository
     ) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")

@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,10 +43,12 @@ import com.dialecthub.app.viewmodel.HomeViewModel
 fun HomeScreen(
     viewModel: HomeViewModel,
     onCategoryClick: (String) -> Unit,
+    onReviewClick: () -> Unit,
     onTranslateClick: () -> Unit,
     onSettingsClick: () -> Unit
 ) {
     val categories by viewModel.uiState.collectAsState()
+    val dueCount by viewModel.dueCount.collectAsState()
 
     Scaffold(
         topBar = {
@@ -74,9 +77,52 @@ fun HomeScreen(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier.fillMaxSize()
             ) {
+                item(key = "review") {
+                    ReviewCard(dueCount = dueCount, onClick = onReviewClick)
+                }
                 items(categories, key = { it.category.id }) { state ->
                     CategoryCard(state = state, onClick = { onCategoryClick(state.category.id) })
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ReviewCard(dueCount: Int, onClick: () -> Unit) {
+    val hasDue = dueCount > 0
+    Card(
+        onClick = onClick,
+        enabled = hasDue,
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant
+        ),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                imageVector = Icons.Filled.Refresh,
+                contentDescription = null,
+                tint = if (hasDue) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+            Column {
+                Text(
+                    text = if (hasDue) "Review $dueCount ${if (dueCount == 1) "word" else "words"}" else "Review",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = if (hasDue) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    text = if (hasDue) {
+                        "Due today, from every category you've quizzed"
+                    } else {
+                        "Nothing due. Quizzed words come back here when it's time to review them."
+                    },
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = if (hasDue) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
         }
     }

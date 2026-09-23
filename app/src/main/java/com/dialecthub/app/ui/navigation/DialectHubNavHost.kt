@@ -33,6 +33,7 @@ fun DialectHubNavHost(navController: NavHostController = rememberNavController()
                 onCategoryClick = { categoryId ->
                     navController.navigate(Screen.Category.createRoute(categoryId))
                 },
+                onReviewClick = { navController.navigate(Screen.Review.route) },
                 onTranslateClick = { navController.navigate(Screen.Translate.route) },
                 onSettingsClick = { navController.navigate(Screen.Settings.route) }
             )
@@ -67,6 +68,18 @@ fun DialectHubNavHost(navController: NavHostController = rememberNavController()
             val viewModel: QuizViewModel = viewModel(
                 key = "quiz_$categoryId",
                 factory = QuizViewModel.Factory(categoryId, repository)
+            )
+            QuizScreen(
+                viewModel = viewModel,
+                onFinish = { navController.popBackStack(Screen.Home.route, inclusive = false) },
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(Screen.Review.route) {
+            val viewModel: QuizViewModel = viewModel(
+                key = "quiz_review",
+                factory = QuizViewModel.Factory(categoryId = null, repository = repository)
             )
             QuizScreen(
                 viewModel = viewModel,

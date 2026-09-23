@@ -14,6 +14,10 @@ Ask Claude lookup works offline.
   pronunciation hint.
 - **Quizzes** -- multiple-choice practice per category, with a results
   screen and a "best score" saved per category.
+- **Spaced-repetition review** -- every quiz answer schedules that word
+  for review (Leitner boxes: 1, 3, 7, 14, then 30 days; a wrong answer
+  starts it over). The Review card on Home quizzes you on whatever is due,
+  across all categories, up to 20 words at a time.
 - **Progress tracking** -- best score and completion badges, persisted
   on-device (no account, no network required).
 - **Light/dark/system theme**, with a "reset all progress" option in
@@ -37,11 +41,12 @@ reply format, input capped at 60 characters, and low effort. Change
 ```
 app/src/main/java/com/dialecthub/app/
   data/                  Lesson content, persistence, Claude lookup
-    model/               VocabItem, Category, CategoryProgress, ThemeMode
+    model/               VocabItem, Category, CategoryProgress, ReviewState, ThemeMode
     LessonContent.kt      Loads and validates assets/lessons.json
-    ProgressRepository.kt DataStore-backed progress/theme/API-key persistence
+    ProgressRepository.kt DataStore-backed progress/review/theme/API-key persistence
+    SpacedRepetition.kt   Leitner-box scheduling rules
     ClaudeTranslator.kt   Ask Claude prompt, API call and reply parsing
-  viewmodel/             Home, Quiz, Settings and Translate view models
+  viewmodel/             Home, Quiz (category + review), Settings and Translate view models
   ui/
     navigation/          NavHost + route definitions
     screens/             Home, Category, Quiz, Settings and Translate screens
@@ -49,7 +54,7 @@ app/src/main/java/com/dialecthub/app/
   DialectHubApplication.kt
   MainActivity.kt
 app/src/main/assets/     lessons.json (all vocabulary)
-app/src/test/.../data/   Reply parser and lesson file unit tests
+app/src/test/.../data/   Reply parser, lesson file and review scheduling unit tests
 ```
 
 No backend and no Room -- vocabulary lives in a bundled JSON file, and
@@ -103,7 +108,6 @@ screen.
 
 - Real audio pronunciation (recorded native-speaker clips, since
   Android's built-in TTS doesn't support Hokkien).
-- Spaced repetition (SRS) instead of simple best-score tracking.
 - More categories and a proper lesson sequence with difficulty levels.
 - Sentence-building / listening exercises, not just word-level recall.
 - Cloud sync / accounts if multi-device progress becomes a priority.

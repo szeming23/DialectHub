@@ -1,6 +1,7 @@
 package com.dialecthub.app.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,6 +14,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -40,7 +42,7 @@ fun QuizScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("${viewModel.categoryTitle} Quiz") },
+                title = { Text(viewModel.title) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -50,7 +52,14 @@ fun QuizScreen(
         }
     ) { padding ->
         Column(modifier = Modifier.padding(padding).fillMaxSize().padding(16.dp)) {
-            if (viewModel.isFinished) {
+            val questions = viewModel.questions
+            if (questions == null) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
+                }
+            } else if (questions.isEmpty()) {
+                NothingToReview(onDone = onFinish)
+            } else if (viewModel.isFinished) {
                 QuizResult(
                     scorePercent = viewModel.scorePercent,
                     score = viewModel.score,
@@ -170,6 +179,32 @@ private fun AnswerButton(
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(text)
+    }
+}
+
+@Composable
+private fun NothingToReview(onDone: () -> Unit) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(text = "✅", style = MaterialTheme.typography.displayLarge)
+        Text(
+            text = "Nothing to review right now",
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.padding(top = 8.dp)
+        )
+        Text(
+            text = "Words you've quizzed come back here when they're due.",
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(top = 4.dp, bottom = 32.dp)
+        )
+        Button(onClick = onDone, modifier = Modifier.fillMaxWidth()) {
+            Text("Back to Home")
+        }
     }
 }
 

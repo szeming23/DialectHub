@@ -127,7 +127,7 @@ fun SettingsScreen(
         AlertDialog(
             onDismissRequest = { showResetDialog = false },
             title = { Text("Reset all progress?") },
-            text = { Text("This clears every quiz score and completion badge. This can't be undone.") },
+            text = { Text("This clears every quiz score, completion badge and review schedule. This can't be undone.") },
             confirmButton = {
                 TextButton(onClick = {
                     viewModel.resetProgress()
