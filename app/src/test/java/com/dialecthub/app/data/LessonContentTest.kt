@@ -44,6 +44,18 @@ class LessonContentTest {
     }
 
     @Test
+    fun rejectsItemIdThatIsUnsafeAsAFileName() {
+        val items = fourItems().replace("\"food_2\"", "\"food/2\"")
+        assertThrows(IllegalArgumentException::class.java) { LessonContent.parse(lessons(items = items)) }
+    }
+
+    @Test
+    fun rejectsUppercaseCategoryId() {
+        val json = lessons(items = fourItems()).replace("\"id\":\"food\"", "\"id\":\"Food\"")
+        assertThrows(IllegalArgumentException::class.java) { LessonContent.parse(json) }
+    }
+
+    @Test
     fun rejectsBlankField() {
         val items = fourItems().replace("\"Tê\"", "\" \"")
         assertThrows(IllegalArgumentException::class.java) { LessonContent.parse(lessons(items = items)) }

@@ -112,8 +112,11 @@ All words live in `app/src/main/assets/lessons.json`, one item per line:
 ```
 
 Add items to an existing category, or add a new category object (`id`,
-`titleEn`, `titleHokkien`, `emoji`, `items`). Keep ids unique and never
-reuse or rename an existing one, since saved progress is keyed by id.
+`titleEn`, `titleHokkien`, `emoji`, `items`). Ids may only use lowercase
+letters, digits and `_`. Keep them unique, and never rename an existing
+one or reuse it for a different word: saved progress, review schedules
+and pronunciation recordings are all keyed by id, so a renamed word
+loses them and a reused id inherits the old word's.
 Each category needs at least 4 items, since a quiz question shows the
 answer plus three others, and no two items in a category may share an
 English meaning. `./gradlew testDebugUnitTest` checks all of this, and

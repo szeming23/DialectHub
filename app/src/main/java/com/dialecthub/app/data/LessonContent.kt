@@ -18,6 +18,12 @@ object LessonContent {
     /** A quiz question needs the right answer plus three distractors. */
     const val MIN_ITEMS_PER_CATEGORY = 4
 
+    /**
+     * Ids become file names (pronunciation clips), preference keys and
+     * navigation routes, so they're limited to characters safe in all three.
+     */
+    private val ID_PATTERN = Regex("[a-z0-9_]+")
+
     lateinit var categories: List<Category>
         private set
 
@@ -32,9 +38,9 @@ object LessonContent {
 
     /**
      * Parses and validates the lesson file. Throws on a missing field, an
-     * empty value, a duplicate id or a category too small to quiz, so a bad
-     * edit fails loudly at startup (and in the unit tests) rather than
-     * showing a broken screen later.
+     * empty value, a duplicate or malformed id or a category too small to
+     * quiz, so a bad edit fails loudly at startup (and in the unit tests)
+     * rather than showing a broken screen later.
      */
     fun parse(json: String): List<Category> {
         val categoriesJson = JSONObject(json).getJSONArray("categories")
@@ -59,6 +65,9 @@ object LessonContent {
             )
         }
 
+        (categories.map { it.id } + categories.flatMap { it.items }.map { it.id }).forEach { id ->
+            require(ID_PATTERN.matches(id)) { "Id '$id' may only use a-z, 0-9 and _" }
+        }
         requireUnique(categories.map { it.id }, "category id")
         requireUnique(categories.flatMap { it.items }.map { it.id }, "item id")
         categories.forEach { category ->
