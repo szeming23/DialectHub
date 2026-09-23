@@ -36,22 +36,25 @@ reply format, input capped at 60 characters, and low effort. Change
 
 ```
 app/src/main/java/com/dialecthub/app/
-  data/                  Static lesson content + progress persistence
+  data/                  Lesson content, persistence, Claude lookup
     model/               VocabItem, Category, CategoryProgress, ThemeMode
     LessonContent.kt      Hardcoded starter vocabulary (Kotlin, not JSON)
-    ProgressRepository.kt DataStore-backed progress/theme persistence
-  viewmodel/             HomeViewModel, QuizViewModel, SettingsViewModel
+    ProgressRepository.kt DataStore-backed progress/theme/API-key persistence
+    ClaudeTranslator.kt   Ask Claude prompt, API call and reply parsing
+  viewmodel/             Home, Quiz, Settings and Translate view models
   ui/
     navigation/          NavHost + route definitions
-    screens/             HomeScreen, CategoryScreen, QuizScreen, SettingsScreen
+    screens/             Home, Category, Quiz, Settings and Translate screens
     theme/                Color/Type/Theme (Material 3)
   DialectHubApplication.kt
   MainActivity.kt
+app/src/test/.../data/   ClaudeTranslatorTest (reply parser unit tests)
 ```
 
 No backend, no Room, no JSON parsing -- content lives directly in
-`LessonContent.kt` and progress lives in Jetpack DataStore Preferences.
-This keeps the app simple to build on and easy to reason about for a v1.
+`LessonContent.kt`, and progress, settings and the Claude API key live in
+Jetpack DataStore Preferences. This keeps the app simple to build on and
+easy to reason about for a v1.
 
 ## Building
 
@@ -66,17 +69,8 @@ Or from the command line, once you have an Android SDK installed and
 ```
 ./gradlew assembleDebug
 ./gradlew installDebug
+./gradlew testDebugUnitTest
 ```
-
-> This repository was scaffolded in a sandboxed environment with no
-> Android SDK and no network access to Google's Maven/Gradle
-> distribution servers, so the build could not be executed end-to-end
-> here. The Gradle wrapper JAR was generated from a real local Gradle
-> install and its bootstrap behavior was smoke-tested (it correctly
-> attempts to download the pinned Gradle 8.7 distribution). Please run
-> a full build in Android Studio before relying on this as production
-> code, and file/fix any issues that surface -- ordinary Compose/Kotlin
-> code, but it hasn't been compiled by a real Android toolchain yet.
 
 ## Content notes
 
