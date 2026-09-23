@@ -38,7 +38,7 @@ reply format, input capped at 60 characters, and low effort. Change
 app/src/main/java/com/dialecthub/app/
   data/                  Lesson content, persistence, Claude lookup
     model/               VocabItem, Category, CategoryProgress, ThemeMode
-    LessonContent.kt      Hardcoded starter vocabulary (Kotlin, not JSON)
+    LessonContent.kt      Loads and validates assets/lessons.json
     ProgressRepository.kt DataStore-backed progress/theme/API-key persistence
     ClaudeTranslator.kt   Ask Claude prompt, API call and reply parsing
   viewmodel/             Home, Quiz, Settings and Translate view models
@@ -48,12 +48,13 @@ app/src/main/java/com/dialecthub/app/
     theme/                Color/Type/Theme (Material 3)
   DialectHubApplication.kt
   MainActivity.kt
-app/src/test/.../data/   ClaudeTranslatorTest (reply parser unit tests)
+app/src/main/assets/     lessons.json (all vocabulary)
+app/src/test/.../data/   Reply parser and lesson file unit tests
 ```
 
-No backend, no Room, no JSON parsing -- content lives directly in
-`LessonContent.kt`, and progress, settings and the Claude API key live in
-Jetpack DataStore Preferences. This keeps the app simple to build on and
+No backend and no Room -- vocabulary lives in a bundled JSON file, and
+progress, settings and the Claude API key live in Jetpack DataStore
+Preferences. This keeps the app simple to build on and
 easy to reason about for a v1.
 
 ## Building
@@ -81,6 +82,23 @@ drops tones, and it spells voiced b/g the same as unaspirated p/k, so
 Tâi-lô stays the authoritative spelling. The Settings screen explains
 how to read it.
 
+## Adding vocabulary
+
+All words live in `app/src/main/assets/lessons.json`, one item per line:
+
+```json
+{"id": "food_11", "hanji": "果子", "tailo": "Kué-tsí", "english": "Fruit", "pronunciationHint": "gue-ji"}
+```
+
+Add items to an existing category, or add a new category object (`id`,
+`titleEn`, `titleHokkien`, `emoji`, `items`). Keep ids unique and never
+reuse or rename an existing one, since saved progress is keyed by id.
+Each category needs at least 4 items, since a quiz question shows the
+answer plus three others, and no two items in a category may share an
+English meaning. `./gradlew testDebugUnitTest` checks all of this, and
+the app refuses to start on an invalid file rather than showing a broken
+screen.
+
 ## Roadmap ideas (deliberately out of scope for v1)
 
 - Real audio pronunciation (recorded native-speaker clips, since
@@ -89,5 +107,3 @@ how to read it.
 - More categories and a proper lesson sequence with difficulty levels.
 - Sentence-building / listening exercises, not just word-level recall.
 - Cloud sync / accounts if multi-device progress becomes a priority.
-- Move lesson content to a data file (JSON/SQLite) if it grows large
-  enough that hardcoding in Kotlin becomes unwieldy.

@@ -1,0 +1,94 @@
+{
+  "categories": [
+    {
+      "id": "greetings",
+      "titleEn": "Greetings",
+      "titleHokkien": "打招呼",
+      "emoji": "👋",
+      "items": [
+        {"id": "greetings_1", "hanji": "你好", "tailo": "Lí hó", "english": "Hello", "pronunciationHint": "li ho"},
+        {"id": "greetings_2", "hanji": "多謝", "tailo": "To-siā", "english": "Thank you", "pronunciationHint": "do-xia"},
+        {"id": "greetings_3", "hanji": "免客氣", "tailo": "Bián kheh-khì", "english": "You're welcome", "pronunciationHint": "bian keh-ki"},
+        {"id": "greetings_4", "hanji": "歹勢", "tailo": "Pháinn-sè", "english": "Sorry / excuse me", "pronunciationHint": "paiⁿ-se"},
+        {"id": "greetings_5", "hanji": "再會", "tailo": "Tsài-huē", "english": "Goodbye", "pronunciationHint": "zai-hue"},
+        {"id": "greetings_6", "hanji": "早安", "tailo": "Tsá-an", "english": "Good morning", "pronunciationHint": "za-an"},
+        {"id": "greetings_7", "hanji": "暗安", "tailo": "Àm-an", "english": "Good night", "pronunciationHint": "am-an"},
+        {"id": "greetings_8", "hanji": "是", "tailo": "Sī", "english": "Yes", "pronunciationHint": "xi"},
+        {"id": "greetings_9", "hanji": "毋是", "tailo": "M̄-sī", "english": "No / not so", "pronunciationHint": "m-xi"},
+        {"id": "greetings_10", "hanji": "你叫啥物名?", "tailo": "Lí kiò siánn-mi̍h miâ?", "english": "What is your name?", "pronunciationHint": "li gio xiaⁿ-mih mia"}
+      ]
+    },
+    {
+      "id": "numbers",
+      "titleEn": "Numbers",
+      "titleHokkien": "數字",
+      "emoji": "🔢",
+      "items": [
+        {"id": "numbers_1", "hanji": "一", "tailo": "Tsi̍t", "english": "One", "pronunciationHint": "jit"},
+        {"id": "numbers_2", "hanji": "二", "tailo": "Nn̄g", "english": "Two", "pronunciationHint": "nng"},
+        {"id": "numbers_3", "hanji": "三", "tailo": "Sann", "english": "Three", "pronunciationHint": "saⁿ"},
+        {"id": "numbers_4", "hanji": "四", "tailo": "Sì", "english": "Four", "pronunciationHint": "xi"},
+        {"id": "numbers_5", "hanji": "五", "tailo": "Gōo", "english": "Five", "pronunciationHint": "go"},
+        {"id": "numbers_6", "hanji": "六", "tailo": "La̍k", "english": "Six", "pronunciationHint": "lak"},
+        {"id": "numbers_7", "hanji": "七", "tailo": "Tshit", "english": "Seven", "pronunciationHint": "qit"},
+        {"id": "numbers_8", "hanji": "八", "tailo": "Peh", "english": "Eight", "pronunciationHint": "beh"},
+        {"id": "numbers_9", "hanji": "九", "tailo": "Káu", "english": "Nine", "pronunciationHint": "gao"},
+        {"id": "numbers_10", "hanji": "十", "tailo": "Tsa̍p", "english": "Ten", "pronunciationHint": "zap"}
+      ]
+    },
+    {
+      "id": "family",
+      "titleEn": "Family",
+      "titleHokkien": "家人",
+      "emoji": "👪",
+      "items": [
+        {"id": "family_1", "hanji": "阿爸", "tailo": "A-pah", "english": "Father", "pronunciationHint": "a-bah"},
+        {"id": "family_2", "hanji": "阿母", "tailo": "A-bú", "english": "Mother", "pronunciationHint": "a-bu"},
+        {"id": "family_3", "hanji": "阿公", "tailo": "A-kong", "english": "Grandfather", "pronunciationHint": "a-gong"},
+        {"id": "family_4", "hanji": "阿媽", "tailo": "A-má", "english": "Grandmother", "pronunciationHint": "a-ma"},
+        {"id": "family_5", "hanji": "阿兄", "tailo": "A-hiann", "english": "Older brother", "pronunciationHint": "a-hiaⁿ"},
+        {"id": "family_6", "hanji": "阿姊", "tailo": "A-tsí", "english": "Older sister", "pronunciationHint": "a-ji"},
+        {"id": "family_7", "hanji": "小弟", "tailo": "Sió-tī", "english": "Younger brother", "pronunciationHint": "xio-di"},
+        {"id": "family_8", "hanji": "小妹", "tailo": "Sió-muē", "english": "Younger sister", "pronunciationHint": "xio-mue"},
+        {"id": "family_9", "hanji": "後生", "tailo": "Hāu-senn", "english": "Son", "pronunciationHint": "hao-seⁿ"},
+        {"id": "family_10", "hanji": "查某囝", "tailo": "Tsa-bóo-kiánn", "english": "Daughter", "pronunciationHint": "za-bo-giaⁿ"}
+      ]
+    },
+    {
+      "id": "food",
+      "titleEn": "Food",
+      "titleHokkien": "食物",
+      "emoji": "🍜",
+      "items": [
+        {"id": "food_1", "hanji": "飯", "tailo": "Pn̄g", "english": "Rice", "pronunciationHint": "bng"},
+        {"id": "food_2", "hanji": "水", "tailo": "Tsuí", "english": "Water", "pronunciationHint": "zui"},
+        {"id": "food_3", "hanji": "茶", "tailo": "Tê", "english": "Tea", "pronunciationHint": "de"},
+        {"id": "food_4", "hanji": "麵", "tailo": "Mī", "english": "Noodles", "pronunciationHint": "mi"},
+        {"id": "food_5", "hanji": "魚", "tailo": "Hî", "english": "Fish", "pronunciationHint": "hi"},
+        {"id": "food_6", "hanji": "肉", "tailo": "Bah", "english": "Meat", "pronunciationHint": "bah"},
+        {"id": "food_7", "hanji": "菜", "tailo": "Tshài", "english": "Vegetable", "pronunciationHint": "cai"},
+        {"id": "food_8", "hanji": "食", "tailo": "Tsia̍h", "english": "To eat", "pronunciationHint": "jiah"},
+        {"id": "food_9", "hanji": "好食", "tailo": "Hó-tsia̍h", "english": "Delicious", "pronunciationHint": "ho-jiah"},
+        {"id": "food_10", "hanji": "卵", "tailo": "Nn̄g", "english": "Egg", "pronunciationHint": "nng"}
+      ]
+    },
+    {
+      "id": "phrases",
+      "titleEn": "Common Phrases",
+      "titleHokkien": "常用語",
+      "emoji": "💬",
+      "items": [
+        {"id": "phrases_1", "hanji": "偌濟錢?", "tailo": "Guā-tsē tsînn?", "english": "How much money?", "pronunciationHint": "gua-ze jiⁿ"},
+        {"id": "phrases_2", "hanji": "我聽無", "tailo": "Guá thiann-bô", "english": "I don't understand", "pronunciationHint": "gua tiaⁿ-bo"},
+        {"id": "phrases_3", "hanji": "廁所佇佗位?", "tailo": "Tshek-sóo tī tó-uī?", "english": "Where is the bathroom?", "pronunciationHint": "cek-so di do-ui"},
+        {"id": "phrases_4", "hanji": "我愛你", "tailo": "Guá ài lí", "english": "I love you", "pronunciationHint": "gua ai li"},
+        {"id": "phrases_5", "hanji": "講較慢咧", "tailo": "Kóng khah bān--leh", "english": "Please speak slower", "pronunciationHint": "gong kah ban-leh"},
+        {"id": "phrases_6", "hanji": "這是啥物?", "tailo": "Tsit sī siánn-mi̍h?", "english": "What is this?", "pronunciationHint": "jit xi xiaⁿ-mih"},
+        {"id": "phrases_7", "hanji": "鬥相共", "tailo": "Tàu-sann-kāng", "english": "Please help me", "pronunciationHint": "dao-saⁿ-gang"},
+        {"id": "phrases_8", "hanji": "食飽矣", "tailo": "Tsia̍h-pá--ah", "english": "I'm full (from eating)", "pronunciationHint": "jiah-ba-ah"},
+        {"id": "phrases_9", "hanji": "有夠好食!", "tailo": "Ū-kàu hó-tsia̍h!", "english": "So delicious!", "pronunciationHint": "u-gao ho-jiah"},
+        {"id": "phrases_10", "hanji": "保重", "tailo": "Pó-tiōng", "english": "Take care", "pronunciationHint": "bo-diong"}
+      ]
+    }
+  ]
+}
