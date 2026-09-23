@@ -1,6 +1,7 @@
 package com.dialecthub.app.ui.screens
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -36,7 +37,7 @@ import com.dialecthub.app.data.LessonContent
 import com.dialecthub.app.data.model.VocabItem
 import com.dialecthub.app.ui.theme.FlashcardHanjiStyle
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun CategoryScreen(
     categoryId: String,
